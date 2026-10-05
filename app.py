@@ -1,6 +1,17 @@
 from flask import Flask, render_template
+from database.db import get_db, init_db, seed_db, close_db
 
 app = Flask(__name__)
+
+# Ensure database is initialized and seeded on startup
+with app.app_context():
+    init_db()
+    seed_db()
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    close_db(exception)
+
 
 
 # ------------------------------------------------------------------ #
